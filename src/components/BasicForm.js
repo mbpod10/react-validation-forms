@@ -2,6 +2,14 @@ import useBasicInput from "../hooks/use-basic-input";
 
 const BasicForm = (props) => {
 
+  const validateEmail = (email) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   const {
     value: firstName,
     valueIsValid: firstNameValid,
@@ -27,7 +35,7 @@ const BasicForm = (props) => {
     valueChangeHandler: emailChangeHandler,
     valueBlurHandler: emailBlurHandler,
     reset: emailReset
-  } = useBasicInput(value => value.includes("@"))
+  } = useBasicInput(value => validateEmail(value))
 
 
   const firstNameClasses = firstNameHasErrors ? "form-control invalid" : "form-control"
