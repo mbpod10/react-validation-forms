@@ -1,0 +1,52 @@
+import { useReducer } from "react"
+
+const initialState = {
+  value: "",
+  isTouched: false
+}
+
+const inputReducer = (state, action) => {
+  if (action.type === "CHANGE") {
+    return { value: action.value, isTouched: state.isTouched }
+  }
+  if (action.type === "TOUCHED") {
+    return { isTouched: true, value: state.value }
+  }
+  if (action.type === "RESET") {
+    return { isTouched: false, value: "" }
+  }
+  // return 
+  return { ...initialState }
+}
+
+const useBasicInput = (validationFunction) => {
+
+  const [inputState, dispatch] = useReducer(inputReducer, initialState)
+
+  const valueIsValid = validationFunction(inputState.value)
+  const hasErrors = !valueIsValid && inputState.isTouched
+
+  const valueChangeHandler = (event) => {
+    dispatch({ action: "CHANGE", value: event.target.value })
+    // console.log(event.target.id, event.target.value)
+  }
+
+  const valueBlurHandler = () => {
+    dispatch({ action: "TOUCHED" })
+  }
+
+  const reset = () => {
+    dispatch({ action: "RESET" })
+  }
+
+  return {
+    value: inputState.value,
+    valueIsValid: valueIsValid,
+    hasErrors: hasErrors,
+    valueChangeHandler: valueChangeHandler,
+    valueBlurHandler: valueBlurHandler,
+    reset: reset,
+  }
+}
+
+export default useBasicInput

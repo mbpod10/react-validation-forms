@@ -1,14 +1,23 @@
-import useBasicInput from "../hooks/use-basic-input";
+// import useBasicInput from "../hooks/use-basic-input";
+import useBasicInput from "../hooks/use-reducer-input";
+
+
+// const validateEmail = (email) => {
+//   return String(email)
+//     .toLowerCase()
+//     .match(
+//       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+//     );
+// };
+
+// const notEmpty = (value) => {
+//   // console.log(value)
+//   return value.trim() !== ""
+// }
+const notEmpty = (value) => value.trim() !== '';
+const validateEmail = (value) => value.includes('@');
 
 const BasicForm = (props) => {
-
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   const {
     value: firstName,
@@ -17,7 +26,7 @@ const BasicForm = (props) => {
     valueChangeHandler: firstNameChangeHandler,
     valueBlurHandler: firstNameBlurHandler,
     reset: firstNameReset
-  } = useBasicInput(value => value.trim() !== "")
+  } = useBasicInput(notEmpty)
 
   const {
     value: lastName,
@@ -26,7 +35,7 @@ const BasicForm = (props) => {
     valueChangeHandler: lastNameChangeHandler,
     valueBlurHandler: lastNameBlurHandler,
     reset: lastNameReset
-  } = useBasicInput(value => value.trim() !== "")
+  } = useBasicInput(notEmpty)
 
   const {
     value: email,
@@ -36,6 +45,7 @@ const BasicForm = (props) => {
     valueBlurHandler: emailBlurHandler,
     reset: emailReset
   } = useBasicInput(value => validateEmail(value))
+  // } = useBasicInput(validateEmail)
 
 
   const firstNameClasses = firstNameHasErrors ? "form-control invalid" : "form-control"
@@ -50,6 +60,11 @@ const BasicForm = (props) => {
 
   const onSubmitHandler = (event) => {
     event.preventDefault()
+
+    if (!formIsValid) {
+      return;
+    }
+
     firstNameReset()
     lastNameReset()
     emailReset()
@@ -83,8 +98,8 @@ const BasicForm = (props) => {
           {lastNameHasErrors && <p className="error-text">Last Name Must Be Valid</p>}
         </div>
 
-
       </div>
+
       <div className={emailClasses}>
         <label htmlFor='name'>E-Mail Address</label>
         <input
