@@ -15,8 +15,8 @@ const inputReducer = (state, action) => {
   if (action.type === "RESET") {
     return { isTouched: false, value: "" }
   }
-  // return 
-  return { ...initialState }
+
+  return initialState
 }
 
 const useBasicInput = (validationFunction) => {
@@ -27,16 +27,15 @@ const useBasicInput = (validationFunction) => {
   const hasErrors = !valueIsValid && inputState.isTouched
 
   const valueChangeHandler = (event) => {
-    dispatch({ action: "CHANGE", value: event.target.value })
-    // console.log(event.target.id, event.target.value)
+    dispatch({ type: "CHANGE", value: event.target.value })
   }
 
   const valueBlurHandler = () => {
-    dispatch({ action: "TOUCHED" })
+    dispatch({ type: "TOUCHED" })
   }
 
   const reset = () => {
-    dispatch({ action: "RESET" })
+    dispatch({ type: "RESET" })
   }
 
   return {

@@ -1,21 +1,16 @@
-// import useBasicInput from "../hooks/use-basic-input";
 import useBasicInput from "../hooks/use-reducer-input";
 
+const validateEmail = (email) => {
+  return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+};
 
-// const validateEmail = (email) => {
-//   return String(email)
-//     .toLowerCase()
-//     .match(
-//       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-//     );
-// };
-
-// const notEmpty = (value) => {
-//   // console.log(value)
-//   return value.trim() !== ""
-// }
-const notEmpty = (value) => value.trim() !== '';
-const validateEmail = (value) => value.includes('@');
+const notEmpty = (value) => {
+  return value.trim() !== ""
+}
 
 const BasicForm = (props) => {
 
@@ -45,8 +40,6 @@ const BasicForm = (props) => {
     valueBlurHandler: emailBlurHandler,
     reset: emailReset
   } = useBasicInput(value => validateEmail(value))
-  // } = useBasicInput(validateEmail)
-
 
   const firstNameClasses = firstNameHasErrors ? "form-control invalid" : "form-control"
   const lastNameClasses = lastNameHasErrors ? "form-control invalid" : "form-control"
